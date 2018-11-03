@@ -161,7 +161,7 @@ export default {
     /**
      * Flag getter.
      * @param {string} key
-     * @returns {any}
+     * @returns {*}
      */
     get(key) {
       return this.mutable[key]
@@ -170,7 +170,7 @@ export default {
     /**
      * Flag setter.
      * @param {string} key
-     * @param {any} value
+     * @param {*} value
      * @returns {void}
      */
     set(key, value) {

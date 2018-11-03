@@ -70,11 +70,6 @@ export default {
       this.offset(index)
     })
   },
-  beforeDestroy() {
-    if (!this.persist) {
-      this.removeStorage()
-    }
-  },
   computed: {
     /**
      * Storage key.
