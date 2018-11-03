@@ -1,58 +1,93 @@
 <template>
-  <div class="hello">
-    <h1>{{ msg }}</h1>
-    <p>
-      For guide and recipes on how to configure / customize this project,<br>
-      check out the
-      <a href="https://cli.vuejs.org" target="_blank">vue-cli documentation</a>.
-    </p>
-    <h3>Installed CLI Plugins</h3>
-    <ul>
-      <li><a href="https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-babel" target="_blank">babel</a></li>
-      <li><a href="https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-eslint" target="_blank">eslint</a></li>
-    </ul>
-    <h3>Essential Links</h3>
-    <ul>
-      <li><a href="https://vuejs.org" target="_blank">Core Docs</a></li>
-      <li><a href="https://forum.vuejs.org" target="_blank">Forum</a></li>
-      <li><a href="https://chat.vuejs.org" target="_blank">Community Chat</a></li>
-      <li><a href="https://twitter.com/vuejs" target="_blank">Twitter</a></li>
-      <li><a href="https://news.vuejs.org" target="_blank">News</a></li>
-    </ul>
-    <h3>Ecosystem</h3>
-    <ul>
-      <li><a href="https://router.vuejs.org" target="_blank">vue-router</a></li>
-      <li><a href="https://vuex.vuejs.org" target="_blank">vuex</a></li>
-      <li><a href="https://github.com/vuejs/vue-devtools#vue-devtools" target="_blank">vue-devtools</a></li>
-      <li><a href="https://vue-loader.vuejs.org" target="_blank">vue-loader</a></li>
-      <li><a href="https://github.com/vuejs/awesome-vue" target="_blank">awesome-vue</a></li>
-    </ul>
-  </div>
+  <layout>
+
+    <!-- PAGE 1 -->
+    <layout vh="100" flex clearfix background-image="linear-gradient(45deg, #333333 0%,#151515 75%,#333333 100%)">
+      <layout width="85%" margin="auto">
+        <h1 class="text-center">Vue-Accordion</h1>
+        <div class="tagline text-center">Renderless component for composing Accordion</div>
+        <layout mt="2rem">
+          <accordion-item toggleable single>
+            <template slot="heading"> {{ shortLoremIpsum() }} </template>
+            <template slot="content">
+              <layout margin="1rem">
+                {{ loremIpsum() }}
+              </layout>
+            </template>
+          </accordion-item>
+        </layout>
+      </layout>
+    </layout>
+
+    <!-- PAGE 2 -->
+    <layout minvh="100" clearfix flex>
+      <layout width="85%" margin="auto">
+        <h2>Programmatic</h2>
+        <accordion ref="accordion" persist>
+          <layout mt="2rem">
+            <accordion-item open>
+              <template slot="heading"> {{ shortLoremIpsum() }} </template>
+              <template slot="content">
+                <layout margin="1rem">
+                  {{ loremIpsum() }}
+                </layout>
+              </template>
+            </accordion-item>
+          </layout>
+          <layout mt="1rem">
+            <accordion-item>
+              <template slot="heading"> {{ shortLoremIpsum() }} </template>
+              <template slot="content">
+                <layout margin="1rem">
+                  {{ loremIpsum() }}
+                </layout>
+              </template>
+            </accordion-item>
+          </layout>
+          <layout mt="1rem">
+            <accordion-item>
+              <template slot="heading"> {{ shortLoremIpsum() }} </template>
+              <template slot="content">
+                <layout margin="1rem">
+                  {{ loremIpsum() }}
+                </layout>
+              </template>
+            </accordion-item>
+          </layout>
+        </accordion>
+        <layout margin="1rem 0" flex justify-content="space-between" noclearfix>
+          <span style="font-size: 1.5rem" @click="$refs.accordion.previous()"> &larr; </span>
+          <span style="font-size: 1.5rem" @click="$refs.accordion.next()"> &rarr; </span>
+        </layout>
+      </layout>
+    </layout>
+
+  </layout>
 </template>
 
 <script>
+import Layout from './Layout'
+import loremIpsum from 'lorem-ipsum'
+import capitalize from 'lodash.capitalize'
+import Accordion, { AccordionItem } from 'vue-scope-components'
+
 export default {
-  name: 'HelloWorld',
-  props: {
-    msg: String
+  name: 'Docs',
+  components: {
+    Layout,
+    Accordion,
+    AccordionItem
+  },
+  data: () => ({
+    index: undefined
+  }),
+  methods: {
+    loremIpsum() {
+      return loremIpsum({ units: 'sentences', count: 4 })
+    },
+    shortLoremIpsum() {
+      return capitalize(loremIpsum({ units: 'words', count: 4 }))
+    }
   }
 }
 </script>
-
-<!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
-h3 {
-  margin: 40px 0 0;
-}
-ul {
-  list-style-type: none;
-  padding: 0;
-}
-li {
-  display: inline-block;
-  margin: 0 10px;
-}
-a {
-  color: #42b983;
-}
-</style>
