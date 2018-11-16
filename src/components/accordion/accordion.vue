@@ -50,7 +50,7 @@ export default {
   },
   /**
    * Provide own instance to tab children,
-   * regardless of hierarchy composition.
+   * regardless of composition hierarchy.
    */
   provide() {
     return { tabs: this }
