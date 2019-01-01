@@ -1,5 +1,5 @@
 <template>
-  <div :class="[name.kebab]">
+  <div :class="[name.kebab]" role="tablist">
     <slot></slot>
   </div>
 </template>
@@ -135,7 +135,7 @@ export default {
       if (index === this.tabs.length) {
         const tab = this.tabs[index - 1]
         if (tab.is('dirty')) {
-          tab.set('open', false)
+          tab.set('opened', false)
           tab.set('checked', true)
         }
         return void 0
@@ -155,11 +155,11 @@ export default {
           tab.set('enabled', false)
           tab.set('checked', false)
         }
-        tab.set('open', false)
+        tab.set('opened', false)
       })
 
       const tab = this.getTab(index)
-      tab.set('open', true)
+      tab.set('opened', true)
       tab.set('enabled', true)
 
       this.index = index
@@ -178,6 +178,13 @@ export default {
      */
     getTab(index) {
       return this.tabs[index]
+    },
+
+    /**
+     * Reset
+     */
+    reset() {
+      this.set(0)
     },
 
     /**

@@ -2,8 +2,11 @@
   <div :class="[name.kebab, classes]">
     <!-- Wrap `.header` to fix IE 10/11 flex/min-height bug -->
     <!-- @link https://stackoverflow.com/a/47180142/4106263 -->
-    <div class="header-wrap">
-      <div :class="['header', { 'is-open': flags.open, 'is-enabled': flags.enabled }]" @click="handleClick(index)">
+    <div class="header-wrap" role="tab">
+      <div
+        :class="['header', { 'is-opened': flags.opened, 'is-enabled': flags.enabled }]"
+        @click="handleClick(index)"
+      >
         <template v-if="flags.checked && $slots.headingChecked">
           <span class="heading is-checked">
             <slot name="heading-checked"></slot>
@@ -16,8 +19,10 @@
         </template>
       </div>
     </div>
-    <template v-if="flags.open">
-      <slot name="content"></slot>
+    <template v-if="flags.opened">
+      <div role="tabpanel">
+        <slot name="content"></slot>
+      </div>
     </template>
   </div>
 </template>
@@ -38,17 +43,17 @@ export default {
       type: Number,
       default: 0
     },
-    open: {
+    enabled: {
+      type: Boolean,
+      default: true
+    },
+    opened: {
       type: Boolean,
       default: false
     },
     checked: {
       type: Boolean,
       default: false
-    },
-    enabled: {
-      type: Boolean,
-      default: true
     },
     toggleable: {
       type: Boolean,
@@ -64,10 +69,9 @@ export default {
     return {
       name: { kebab: 'accordion-item' },
       mutable: {
-        dirty: false,
-        open: this.open,
         index: this.index,
         enabled: this.enabled,
+        opened: this.opened,
         checked: this.checked
       }
     }
@@ -77,8 +81,8 @@ export default {
     /**
      * Keeps props in sync with mutable data.
      */
-    open(value) {
-      this.mutable.open = value
+    opened(value) {
+      this.mutable.opened = value
     },
     enabled(value) {
       this.mutable.enabled = value
@@ -90,7 +94,7 @@ export default {
 
   created() {
     /**
-     * Looks for a `tabs` provider and
+     * Looks for `accordion` provider and
      * updates storage if persistable.
      */
     const several = this.flags.several
@@ -101,8 +105,8 @@ export default {
       } else {
         console.error(
           `[Accordion-Item warn]:` +
-            `Accordion provider not found. ` +
-            `For using a single Tab, you must pass a truthy "single" prop.`
+          `Accordion provider not found. ` +
+          `For using a single Tab, you must pass a truthy "single" prop.`
         )
       }
     }
@@ -118,8 +122,8 @@ export default {
       return {
         single: this.single,
         several: !this.single,
-        open: this.mutable.open,
-        closed: !this.mutable.open,
+        opened: this.mutable.opened,
+        closed: !this.mutable.opened,
         enabled: this.mutable.enabled,
         disabled: !this.enabled,
         toggleable: this.toggleable,
@@ -134,10 +138,10 @@ export default {
      */
     classes() {
       const {
-        flags: { open, closed, enabled, disabled, toggleable, checked, sealed }
+        flags: { opened, closed, enabled, disabled, toggleable, checked, sealed }
       } = this
       return {
-        'is-open': open,
+        'is-opened': opened,
         'is-closed': closed,
         'is-enabled': enabled,
         'is-disabled': disabled,
@@ -195,8 +199,8 @@ export default {
         this.$emit('click', index)
       }
       if (this.flags.enabled && this.flags.toggleable) {
-        this.set('open', !this.flags.open)
-        this.$emit('update:open', this.flags.open)
+        this.set('opened', !this.flags.opened)
+        this.$emit('update:opened', this.flags.opened)
       }
     }
   },
@@ -214,7 +218,7 @@ $color-energy-yellow: #f5da55;
     margin-bottom: -1px;
   }
 
-  &.is-open {
+  &.is-opened {
     margin-bottom: 0;
   }
 
@@ -244,7 +248,7 @@ $color-energy-yellow: #f5da55;
     cursor: pointer;
   }
 
-  &.is-open {
+  &.is-opened {
     border-bottom: 1px solid $color-energy-yellow;
   }
 }
@@ -259,7 +263,7 @@ $color-energy-yellow: #f5da55;
     font-weight: 400;
 
     &::before {
-      content: '✔\00a0';
+      content: "✔\00a0";
     }
   }
 }

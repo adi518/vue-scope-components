@@ -16,6 +16,10 @@ export default {
       type: Boolean,
       default: false
     },
+    inline: {
+      type: Boolean,
+      default: false
+    },
     justifyContent: {
       type: String
     },
@@ -28,7 +32,19 @@ export default {
     mt: {
       type: String
     },
+    mr: {
+      type: String
+    },
     mb: {
+      type: String
+    },
+    ml: {
+      type: String
+    },
+    hmargin: {
+      type: String
+    },
+    vmargin: {
       type: String
     },
     vh: {
@@ -67,6 +83,9 @@ export default {
       if (this.flex) {
         rules.display = 'flex'
       }
+      if (this.inline) {
+        rules.display = 'inline-block'
+      }
       if (this.justifyContent) {
         rules.justifyContent = this.justifyContent
       }
@@ -76,8 +95,22 @@ export default {
       if (this.mt) {
         rules.marginTop = this.mt
       }
+      if (this.mr) {
+        rules.marginRight = this.mr
+      }
       if (this.mb) {
         rules.marginBottom = this.mb
+      }
+      if (this.ml) {
+        rules.marginLeft = this.ml
+      }
+      if (this.hmargin) {
+        rules.marginLeft = this.hmargin
+        rules.marginRight = this.hmargin
+      }
+      if (this.vmargin) {
+        rules.marginTop = this.vmargin
+        rules.marginBottom = this.vmargin
       }
       if (this.width) {
         rules.width = this.width
@@ -122,7 +155,7 @@ export default {
   &::before {
     order: 1;
     flex-basis: 0;
-    content: ' ';
+    content: " ";
     /* 1 */
     display: table;
     /* 2 */
