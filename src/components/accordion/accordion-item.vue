@@ -39,10 +39,6 @@ export default {
   },
 
   props: {
-    index: {
-      type: Number,
-      default: 0
-    },
     enabled: {
       type: Boolean,
       default: true
@@ -69,7 +65,7 @@ export default {
     return {
       name: { kebab: 'accordion-item' },
       mutable: {
-        index: this.index,
+        index: undefined,
         enabled: this.enabled,
         opened: this.opened,
         checked: this.checked
@@ -186,7 +182,7 @@ export default {
      * @returns {void}
      */
     remove() {
-      this.tabs.remove(this.mutable.index)
+      this.tabs.remove(this.index)
     },
 
     /**
